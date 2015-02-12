@@ -1,0 +1,95 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="BlogDbModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="Comment">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Description" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="CommentDate" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="PostId" Type="Int32" Nullable="false" />
+    <Property Name="WriterId" Type="Int32" Nullable="false" />
+    <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
+    <NavigationProperty Name="Post" Relationship="Self.FK__tbl_comme__post___173876EA" FromRole="tbl_comment" ToRole="tbl_post" />
+    <NavigationProperty Name="User" Relationship="Self.FK__tbl_comme__write__182C9B23" FromRole="tbl_comment" ToRole="tbl_user" />
+  </EntityType>
+  <EntityType Name="Post">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Title" Type="String" MaxLength="300" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="Description" Type="String" MaxLength="5000" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="PostedDate" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="WriterId" Type="Int32" Nullable="false" />
+    <Property Name="IsPublished" Type="Boolean" Nullable="false" />
+    <Property Name="NoOfView" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="Comment" Relationship="Self.FK__tbl_comme__post___173876EA" FromRole="tbl_post" ToRole="tbl_comment" />
+    <NavigationProperty Name="User" Relationship="Self.FK__tbl_post__writer__145C0A3F" FromRole="tbl_post" ToRole="tbl_user" />
+  </EntityType>
+  <EntityType Name="User">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="String" MaxLength="200" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="Password" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="Email" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
+    <NavigationProperty Name="Comment" Relationship="Self.FK__tbl_comme__write__182C9B23" FromRole="tbl_user" ToRole="tbl_comment" />
+    <NavigationProperty Name="Post" Relationship="Self.FK__tbl_post__writer__145C0A3F" FromRole="tbl_user" ToRole="tbl_post" />
+  </EntityType>
+  <Association Name="FK__tbl_comme__post___173876EA">
+    <End Role="tbl_post" Type="BlogDbModel.Post" Multiplicity="1" />
+    <End Role="tbl_comment" Type="BlogDbModel.Comment" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tbl_post">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="tbl_comment">
+        <PropertyRef Name="PostId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__tbl_comme__write__182C9B23">
+    <End Role="tbl_user" Type="BlogDbModel.User" Multiplicity="1" />
+    <End Role="tbl_comment" Type="BlogDbModel.Comment" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tbl_user">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="tbl_comment">
+        <PropertyRef Name="WriterId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__tbl_post__writer__145C0A3F">
+    <End Role="tbl_user" Type="BlogDbModel.User" Multiplicity="1" />
+    <End Role="tbl_post" Type="BlogDbModel.Post" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tbl_user">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="tbl_post">
+        <PropertyRef Name="WriterId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="BlogDbContext" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="Comments" EntityType="BlogDbModel.Comment" />
+    <EntitySet Name="Posts" EntityType="BlogDbModel.Post" />
+    <EntitySet Name="Users" EntityType="BlogDbModel.User" />
+    <AssociationSet Name="FK__tbl_comme__post___173876EA" Association="Self.FK__tbl_comme__post___173876EA">
+      <End Role="tbl_post" EntitySet="Posts" />
+      <End Role="tbl_comment" EntitySet="Comments" />
+    </AssociationSet>
+    <AssociationSet Name="FK__tbl_comme__write__182C9B23" Association="Self.FK__tbl_comme__write__182C9B23">
+      <End Role="tbl_user" EntitySet="Users" />
+      <End Role="tbl_comment" EntitySet="Comments" />
+    </AssociationSet>
+    <AssociationSet Name="FK__tbl_post__writer__145C0A3F" Association="Self.FK__tbl_post__writer__145C0A3F">
+      <End Role="tbl_user" EntitySet="Users" />
+      <End Role="tbl_post" EntitySet="Posts" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

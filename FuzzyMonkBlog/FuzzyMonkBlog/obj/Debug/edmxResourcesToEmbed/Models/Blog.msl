@@ -1,0 +1,41 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="BlogDbModelStoreContainer" CdmEntityContainer="BlogDbContext">
+    <EntitySetMapping Name="Comments">
+      <EntityTypeMapping TypeName="BlogDbModel.Comment">
+        <MappingFragment StoreEntitySet="tbl_comment">
+          <ScalarProperty Name="Id" ColumnName="id" />
+          <ScalarProperty Name="Description" ColumnName="description" />
+          <ScalarProperty Name="CommentDate" ColumnName="comment_date" />
+          <ScalarProperty Name="PostId" ColumnName="post_id" />
+          <ScalarProperty Name="WriterId" ColumnName="writer_id" />
+          <ScalarProperty Name="IsDeleted" ColumnName="is_deleted" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Posts">
+      <EntityTypeMapping TypeName="BlogDbModel.Post">
+        <MappingFragment StoreEntitySet="tbl_post">
+          <ScalarProperty Name="Id" ColumnName="id" />
+          <ScalarProperty Name="Title" ColumnName="title" />
+          <ScalarProperty Name="Description" ColumnName="description" />
+          <ScalarProperty Name="PostedDate" ColumnName="posted_date" />
+          <ScalarProperty Name="WriterId" ColumnName="writer_id" />
+          <ScalarProperty Name="IsPublished" ColumnName="is_published" />
+          <ScalarProperty Name="NoOfView" ColumnName="no_of_view" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Users">
+      <EntityTypeMapping TypeName="BlogDbModel.User">
+        <MappingFragment StoreEntitySet="tbl_user">
+          <ScalarProperty Name="Id" ColumnName="id" />
+          <ScalarProperty Name="Name" ColumnName="name" />
+          <ScalarProperty Name="Password" ColumnName="password" />
+          <ScalarProperty Name="Email" ColumnName="email" />
+          <ScalarProperty Name="CreatedDate" ColumnName="created_date" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping>

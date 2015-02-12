@@ -1,0 +1,89 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="BlogDbModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="tbl_comment">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="description" Type="varchar" MaxLength="1000" Nullable="false" />
+    <Property Name="comment_date" Type="datetime" Nullable="false" />
+    <Property Name="post_id" Type="int" Nullable="false" />
+    <Property Name="writer_id" Type="int" Nullable="false" />
+    <Property Name="is_deleted" Type="bit" Nullable="false" />
+  </EntityType>
+  <EntityType Name="tbl_post">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="title" Type="varchar" MaxLength="300" Nullable="false" />
+    <Property Name="description" Type="varchar" MaxLength="5000" Nullable="false" />
+    <Property Name="posted_date" Type="datetime" Nullable="false" />
+    <Property Name="writer_id" Type="int" Nullable="false" />
+    <Property Name="is_published" Type="bit" Nullable="false" />
+    <Property Name="no_of_view" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="tbl_user">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="name" Type="varchar" MaxLength="200" Nullable="false" />
+    <Property Name="password" Type="varchar" MaxLength="10" Nullable="false" />
+    <Property Name="email" Type="varchar" MaxLength="100" Nullable="false" />
+    <Property Name="created_date" Type="datetime" Nullable="false" />
+  </EntityType>
+  <Association Name="FK__tbl_comme__post___173876EA">
+    <End Role="tbl_post" Type="Self.tbl_post" Multiplicity="1" />
+    <End Role="tbl_comment" Type="Self.tbl_comment" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tbl_post">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="tbl_comment">
+        <PropertyRef Name="post_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__tbl_comme__write__182C9B23">
+    <End Role="tbl_user" Type="Self.tbl_user" Multiplicity="1" />
+    <End Role="tbl_comment" Type="Self.tbl_comment" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tbl_user">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="tbl_comment">
+        <PropertyRef Name="writer_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__tbl_post__writer__145C0A3F">
+    <End Role="tbl_user" Type="Self.tbl_user" Multiplicity="1" />
+    <End Role="tbl_post" Type="Self.tbl_post" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tbl_user">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="tbl_post">
+        <PropertyRef Name="writer_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="BlogDbModelStoreContainer">
+    <EntitySet Name="tbl_comment" EntityType="Self.tbl_comment" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tbl_post" EntityType="Self.tbl_post" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tbl_user" EntityType="Self.tbl_user" Schema="dbo" store:Type="Tables" />
+    <AssociationSet Name="FK__tbl_comme__post___173876EA" Association="Self.FK__tbl_comme__post___173876EA">
+      <End Role="tbl_post" EntitySet="tbl_post" />
+      <End Role="tbl_comment" EntitySet="tbl_comment" />
+    </AssociationSet>
+    <AssociationSet Name="FK__tbl_comme__write__182C9B23" Association="Self.FK__tbl_comme__write__182C9B23">
+      <End Role="tbl_user" EntitySet="tbl_user" />
+      <End Role="tbl_comment" EntitySet="tbl_comment" />
+    </AssociationSet>
+    <AssociationSet Name="FK__tbl_post__writer__145C0A3F" Association="Self.FK__tbl_post__writer__145C0A3F">
+      <End Role="tbl_user" EntitySet="tbl_user" />
+      <End Role="tbl_post" EntitySet="tbl_post" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

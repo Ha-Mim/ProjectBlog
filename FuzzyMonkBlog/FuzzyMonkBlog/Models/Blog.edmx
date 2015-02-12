@@ -1,0 +1,256 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="BlogDbModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="tbl_comment">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="description" Type="varchar" MaxLength="1000" Nullable="false" />
+          <Property Name="comment_date" Type="datetime" Nullable="false" />
+          <Property Name="post_id" Type="int" Nullable="false" />
+          <Property Name="writer_id" Type="int" Nullable="false" />
+          <Property Name="is_deleted" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="tbl_post">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="title" Type="varchar" MaxLength="300" Nullable="false" />
+          <Property Name="description" Type="varchar" MaxLength="5000" Nullable="false" />
+          <Property Name="posted_date" Type="datetime" Nullable="false" />
+          <Property Name="writer_id" Type="int" Nullable="false" />
+          <Property Name="is_published" Type="bit" Nullable="false" />
+          <Property Name="no_of_view" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="tbl_user">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="name" Type="varchar" MaxLength="200" Nullable="false" />
+          <Property Name="password" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="email" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="created_date" Type="datetime" Nullable="false" />
+        </EntityType>
+        <Association Name="FK__tbl_comme__post___173876EA">
+          <End Role="tbl_post" Type="Self.tbl_post" Multiplicity="1" />
+          <End Role="tbl_comment" Type="Self.tbl_comment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tbl_post">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="tbl_comment">
+              <PropertyRef Name="post_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__tbl_comme__write__182C9B23">
+          <End Role="tbl_user" Type="Self.tbl_user" Multiplicity="1" />
+          <End Role="tbl_comment" Type="Self.tbl_comment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tbl_user">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="tbl_comment">
+              <PropertyRef Name="writer_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__tbl_post__writer__145C0A3F">
+          <End Role="tbl_user" Type="Self.tbl_user" Multiplicity="1" />
+          <End Role="tbl_post" Type="Self.tbl_post" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tbl_user">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="tbl_post">
+              <PropertyRef Name="writer_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="BlogDbModelStoreContainer">
+          <EntitySet Name="tbl_comment" EntityType="Self.tbl_comment" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tbl_post" EntityType="Self.tbl_post" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tbl_user" EntityType="Self.tbl_user" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK__tbl_comme__post___173876EA" Association="Self.FK__tbl_comme__post___173876EA">
+            <End Role="tbl_post" EntitySet="tbl_post" />
+            <End Role="tbl_comment" EntitySet="tbl_comment" />
+          </AssociationSet>
+          <AssociationSet Name="FK__tbl_comme__write__182C9B23" Association="Self.FK__tbl_comme__write__182C9B23">
+            <End Role="tbl_user" EntitySet="tbl_user" />
+            <End Role="tbl_comment" EntitySet="tbl_comment" />
+          </AssociationSet>
+          <AssociationSet Name="FK__tbl_post__writer__145C0A3F" Association="Self.FK__tbl_post__writer__145C0A3F">
+            <End Role="tbl_user" EntitySet="tbl_user" />
+            <End Role="tbl_post" EntitySet="tbl_post" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="BlogDbModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Comment">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Description" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="CommentDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="PostId" Type="Int32" Nullable="false" />
+          <Property Name="WriterId" Type="Int32" Nullable="false" />
+          <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Post" Relationship="Self.FK__tbl_comme__post___173876EA" FromRole="tbl_comment" ToRole="tbl_post" />
+          <NavigationProperty Name="User" Relationship="Self.FK__tbl_comme__write__182C9B23" FromRole="tbl_comment" ToRole="tbl_user" />
+        </EntityType>
+        <EntityType Name="Post">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Title" Type="String" MaxLength="300" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Description" Type="String" MaxLength="5000" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="PostedDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="WriterId" Type="Int32" Nullable="false" />
+          <Property Name="IsPublished" Type="Boolean" Nullable="false" />
+          <Property Name="NoOfView" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Comment" Relationship="Self.FK__tbl_comme__post___173876EA" FromRole="tbl_post" ToRole="tbl_comment" />
+          <NavigationProperty Name="User" Relationship="Self.FK__tbl_post__writer__145C0A3F" FromRole="tbl_post" ToRole="tbl_user" />
+        </EntityType>
+        <EntityType Name="User">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="200" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Password" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Email" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="Comment" Relationship="Self.FK__tbl_comme__write__182C9B23" FromRole="tbl_user" ToRole="tbl_comment" />
+          <NavigationProperty Name="Post" Relationship="Self.FK__tbl_post__writer__145C0A3F" FromRole="tbl_user" ToRole="tbl_post" />
+        </EntityType>
+        <Association Name="FK__tbl_comme__post___173876EA">
+          <End Role="tbl_post" Type="BlogDbModel.Post" Multiplicity="1" />
+          <End Role="tbl_comment" Type="BlogDbModel.Comment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tbl_post">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="tbl_comment">
+              <PropertyRef Name="PostId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__tbl_comme__write__182C9B23">
+          <End Role="tbl_user" Type="BlogDbModel.User" Multiplicity="1" />
+          <End Role="tbl_comment" Type="BlogDbModel.Comment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tbl_user">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="tbl_comment">
+              <PropertyRef Name="WriterId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__tbl_post__writer__145C0A3F">
+          <End Role="tbl_user" Type="BlogDbModel.User" Multiplicity="1" />
+          <End Role="tbl_post" Type="BlogDbModel.Post" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tbl_user">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="tbl_post">
+              <PropertyRef Name="WriterId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="BlogDbContext" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Comments" EntityType="BlogDbModel.Comment" />
+          <EntitySet Name="Posts" EntityType="BlogDbModel.Post" />
+          <EntitySet Name="Users" EntityType="BlogDbModel.User" />
+          <AssociationSet Name="FK__tbl_comme__post___173876EA" Association="Self.FK__tbl_comme__post___173876EA">
+            <End Role="tbl_post" EntitySet="Posts" />
+            <End Role="tbl_comment" EntitySet="Comments" />
+          </AssociationSet>
+          <AssociationSet Name="FK__tbl_comme__write__182C9B23" Association="Self.FK__tbl_comme__write__182C9B23">
+            <End Role="tbl_user" EntitySet="Users" />
+            <End Role="tbl_comment" EntitySet="Comments" />
+          </AssociationSet>
+          <AssociationSet Name="FK__tbl_post__writer__145C0A3F" Association="Self.FK__tbl_post__writer__145C0A3F">
+            <End Role="tbl_user" EntitySet="Users" />
+            <End Role="tbl_post" EntitySet="Posts" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="BlogDbModelStoreContainer" CdmEntityContainer="BlogDbContext">
+          <EntitySetMapping Name="Comments">
+            <EntityTypeMapping TypeName="BlogDbModel.Comment">
+              <MappingFragment StoreEntitySet="tbl_comment">
+                <ScalarProperty Name="Id" ColumnName="id" />
+                <ScalarProperty Name="Description" ColumnName="description" />
+                <ScalarProperty Name="CommentDate" ColumnName="comment_date" />
+                <ScalarProperty Name="PostId" ColumnName="post_id" />
+                <ScalarProperty Name="WriterId" ColumnName="writer_id" />
+                <ScalarProperty Name="IsDeleted" ColumnName="is_deleted" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Posts">
+            <EntityTypeMapping TypeName="BlogDbModel.Post">
+              <MappingFragment StoreEntitySet="tbl_post">
+                <ScalarProperty Name="Id" ColumnName="id" />
+                <ScalarProperty Name="Title" ColumnName="title" />
+                <ScalarProperty Name="Description" ColumnName="description" />
+                <ScalarProperty Name="PostedDate" ColumnName="posted_date" />
+                <ScalarProperty Name="WriterId" ColumnName="writer_id" />
+                <ScalarProperty Name="IsPublished" ColumnName="is_published" />
+                <ScalarProperty Name="NoOfView" ColumnName="no_of_view" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Users">
+            <EntityTypeMapping TypeName="BlogDbModel.User">
+              <MappingFragment StoreEntitySet="tbl_user">
+                <ScalarProperty Name="Id" ColumnName="id" />
+                <ScalarProperty Name="Name" ColumnName="name" />
+                <ScalarProperty Name="Password" ColumnName="password" />
+                <ScalarProperty Name="Email" ColumnName="email" />
+                <ScalarProperty Name="CreatedDate" ColumnName="created_date" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
